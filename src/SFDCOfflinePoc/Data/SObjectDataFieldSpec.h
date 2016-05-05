@@ -24,6 +24,15 @@
 
 #import <Foundation/Foundation.h>
 
+#define NAMESPACE_STRING 1
+
+#ifdef NAMESPACE_STRING
+#define ADD_NAMESPACE(name) @"Pvmagacho__"name
+#else
+#define ADD_NAMESPACE(name) name
+#endif
+
+
 @interface SObjectDataFieldSpec : NSObject
 
 @property (nonatomic, copy) NSString *fieldName;

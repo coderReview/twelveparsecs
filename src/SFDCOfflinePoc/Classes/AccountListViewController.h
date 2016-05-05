@@ -1,5 +1,5 @@
 //
-//  ContactListViewController.h
+//  AccountListViewController.h
 //  SFDCOfflinePoc
 //
 //  Created by pvmagacho on 1/24/16.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BaseListViewController.h"
 
-@interface ContactListViewController : BaseListViewController
+@interface AccountListViewController : BaseListViewController
 
 @end

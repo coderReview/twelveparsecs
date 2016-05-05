@@ -169,14 +169,18 @@
                                  kProductNameField,
                                  [[self class] emptyStringForNullValue:self.product.name],
                                  [self productTextField:self.product.name] ],
-                              @[ @"Description",
-                                 kProductDescriptionField,
-                                 [[self class] emptyStringForNullValue:self.product.productDescription],
-                                 [self productTextField:self.product.productDescription] ],
-                              @[ @"Sku",
-                                 kProductSKUField,
-                                 [[self class] emptyStringForNullValue:self.product.sku],
-                                 [self productTextField:self.product.sku] ]
+                              @[ @"Amount",
+                                 kProductAmountField,
+                                 [[self class] emptyStringForNullValue:[self.product.amount stringValue]],
+                                 [self productTextField:[self.product.amount stringValue]] ],
+                              @[ @"Code",
+                                 kProductCodeField,
+                                 [[self class] emptyStringForNullValue:self.product.code],
+                                 [self productTextField:self.product.code] ],
+                              @[ @"Version",
+                                 kProductCodeField,
+                                 [[self class] emptyStringForNullValue:[self.product.version stringValue]],
+                                 [self productTextField:[self.product.version stringValue]] ]
                               ];
     self.deleteButtonDataRow = @[ @"", [self deleteButtonView] ];
     
@@ -222,8 +226,8 @@
             if (empty && [fieldName isEqualToString:kProductNameField]) {
                 [Helper showToast:self.toastView message:@"Please enter a name" label:self.toastViewMessageLabel];
                 return;
-            } else if (empty && [fieldName isEqualToString:kProductSKUField]) {
-                [Helper showToast:self.toastView message:@"Please enter a SKU value" label:self.toastViewMessageLabel];
+            } else if (empty && [fieldName isEqualToString:kProductCodeField]) {
+                [Helper showToast:self.toastView message:@"Please enter a code value" label:self.toastViewMessageLabel];
                 return;
             }
             [self.product updateSoupForFieldName:fieldName fieldValue:newFieldData];

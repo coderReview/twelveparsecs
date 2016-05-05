@@ -1,17 +1,17 @@
 //
-//  ContactDetailViewController.h
+//  AccountDetailViewController.h
 //  SFDCOfflinePoc
 //
 //  Created by pvmagacho on 1/24/16.
 //  Copyright © 2016 Topcoder Inc. All rights reserved.
 //
 
-#import "ContactDetailViewController.h"
-#import "ContactSObjectDataSpec.h"
+#import "AccountDetailViewController.h"
+#import "AccountSObjectDataSpec.h"
 
-@interface ContactDetailViewController () <UIAlertViewDelegate>
+@interface AccountDetailViewController () <UIAlertViewDelegate>
 
-@property (nonatomic, strong) ContactSObjectData *contact;
+@property (nonatomic, strong) AccountSObjectData *contact;
 @property (nonatomic, strong) SObjectDataManager *dataMgr;
 @property (nonatomic, copy) void (^saveBlock)(void);
 
@@ -21,24 +21,24 @@
 
 @property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL contactUpdated;
-@property (nonatomic, assign) BOOL isNewContact;
+@property (nonatomic, assign) BOOL isNewAccount;
 
 @end
 
-@implementation ContactDetailViewController
+@implementation AccountDetailViewController
 
-- (id)initForNewContactWithDataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock {
-    return [self initWithContact:nil dataManager:dataMgr saveBlock:saveBlock];
+- (id)initForNewAccountWithDataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock {
+    return [self initWithAccount:nil dataManager:dataMgr saveBlock:saveBlock];
 }
 
-- (id)initWithContact:(ContactSObjectData *)contact dataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock {
+- (id)initWithAccount:(AccountSObjectData *)contact dataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         if (contact == nil) {
-            self.isNewContact = YES;
-            self.contact = [[ContactSObjectData alloc] init];
+            self.isNewAccount = YES;
+            self.contact = [[AccountSObjectData alloc] init];
         } else {
-            self.isNewContact = NO;
+            self.isNewAccount = NO;
             self.contact = contact;
         }
         self.dataMgr = dataMgr;
@@ -51,7 +51,7 @@
 - (void)loadView {
     [super loadView];
     
-    self.dataRows = [self dataRowsFromContact];
+    self.dataRows = [self dataRowsFromAccount];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self configureInitialBarButtonItems];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -62,8 +62,8 @@
 
     [self.tableView setAllowsSelection:NO];
 
-    if (self.isNewContact) {
-        [self editContact];
+    if (self.isNewAccount) {
+        [self editAccount];
     }
 }
 
@@ -85,7 +85,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"ContactDetailCellIdentifier";
+    static NSString *CellIdentifier = @"AccountDetailCellIdentifier";
     
     UITableViewCell *cell = [tableView_ dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -122,83 +122,79 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [self deleteContact];
+        [self deleteAccount];
     }
 }
 
 #pragma mark - Private methods
 
 - (void)configureInitialBarButtonItems {
-    if (self.isNewContact) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveContact)];
+    if (self.isNewAccount) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveAccount)];
     } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editContact)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAccount)];
     }
     self.navigationItem.leftBarButtonItem = nil;
 }
 
-- (NSArray *)dataRowsFromContact {
+- (NSArray *)dataRowsFromAccount {
     
-    self.contactDataRows = @[ @[ @"First name",
-                                 kContactFirstNameField,
-                                 [[self class] emptyStringForNullValue:self.contact.firstName],
-                                 [self contactTextField:self.contact.firstName] ],
+    self.contactDataRows = @[ @[ @"Name",
+                                 kAccountNameField,
+                                 [[self class] emptyStringForNullValue:self.contact.name],
+                                 [self contactTextField:self.contact.name] ],
                               @[ @"Last name",
-                                 kContactLastNameField,
-                                 [[self class] emptyStringForNullValue:self.contact.lastName],
-                                 [self contactTextField:self.contact.lastName] ],
+                                 kAccountAccountNumberField,
+                                 [[self class] emptyStringForNullValue:self.contact.accountNumber],
+                                 [self contactTextField:self.contact.accountNumber] ],
                               @[ @"Title",
-                                 kContactTitleField,
-                                 [[self class] emptyStringForNullValue:self.contact.title],
-                                 [self contactTextField:self.contact.title] ],
+                                 kAccountWebsiteField,
+                                 [[self class] emptyStringForNullValue:self.contact.website],
+                                 [self contactTextField:self.contact.website] ],
                               @[ @"Mobile phone",
-                                 kContactMobilePhoneField,
-                                 [[self class] emptyStringForNullValue:self.contact.mobilePhone],
-                                 [self contactTextField:self.contact.mobilePhone] ],
+                                 kAccountPhoneField,
+                                 [[self class] emptyStringForNullValue:self.contact.phone],
+                                 [self contactTextField:self.contact.phone] ],
                               @[ @"Email address",
-                                 kContactEmailField,
-                                 [[self class] emptyStringForNullValue:self.contact.email],
-                                 [self contactTextField:self.contact.email] ],
-                              @[ @"Department",
-                                 kContactDepartmentField,
-                                 [[self class] emptyStringForNullValue:self.contact.department],
-                                 [self contactTextField:self.contact.department] ],
-                              @[ @"Home phone",
-                                 kContactHomePhoneField,
-                                 [[self class] emptyStringForNullValue:self.contact.homePhone],
-                                 [self contactTextField:self.contact.homePhone] ]
+                                 kAccountTypeField,
+                                 [[self class] emptyStringForNullValue:self.contact.type],
+                                 [self contactTextField:self.contact.type] ],
+                              @[ @"Email address",
+                                 kAccountIndustryField,
+                                 [[self class] emptyStringForNullValue:self.contact.industry],
+                                 [self contactTextField:self.contact.industry] ],
                               ];
     self.deleteButtonDataRow = @[ @"", [self deleteButtonView] ];
     
     NSMutableArray *workingDataRows = [NSMutableArray array];
     [workingDataRows addObjectsFromArray:self.contactDataRows];
-    if (!self.isNewContact) {
+    if (!self.isNewAccount) {
         [workingDataRows addObject:self.deleteButtonDataRow];
     }
     return workingDataRows;
 }
 
-- (void)editContact {
+- (void)editAccount {
     self.isEditing = YES;
-    if (!self.isNewContact) {
+    if (!self.isNewAccount) {
         // Buttons will already be set for new contact case.
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelEditContact)];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveContact)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelEditAccount)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveAccount)];
     }
     [self.tableView reloadData];
-    __weak ContactDetailViewController *weakSelf = self;
+    __weak AccountDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf.dataRows[0][3] becomeFirstResponder];
     });
 }
 
-- (void)cancelEditContact {
+- (void)cancelEditAccount {
     self.isEditing = NO;
     [self configureInitialBarButtonItems];
     [self.tableView reloadData];
 }
 
-- (void)saveContact {
+- (void)saveAccount {
     [self configureInitialBarButtonItems];
     
     self.contactUpdated = NO;
@@ -213,7 +209,7 @@
     }
     
     if (self.contactUpdated) {
-        if (self.isNewContact) {
+        if (self.isNewAccount) {
             [self.dataMgr createLocalData:self.contact];
         } else {
             [self.dataMgr updateLocalData:self.contact];
@@ -225,12 +221,12 @@
     
 }
 
-- (void)deleteContactConfirm {
+- (void)deleteAccountConfirm {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this contact?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     [alertView show];
 }
 
-- (void)deleteContact {
+- (void)deleteAccount {
     [self.dataMgr deleteLocalData:self.contact];
     self.contactUpdated = YES;
     [self.navigationController popViewControllerAnimated:YES];
@@ -244,12 +240,12 @@
 
 - (UIButton *)deleteButtonView {
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [deleteButton setTitle:@"Delete Contact" forState:UIControlStateNormal];
+    [deleteButton setTitle:@"Delete Account" forState:UIControlStateNormal];
     [deleteButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     deleteButton.titleLabel.font = [UIFont systemFontOfSize:18.0];
     deleteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     deleteButton.contentEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
-    [deleteButton addTarget:self action:@selector(deleteContactConfirm) forControlEvents:UIControlEventTouchUpInside];
+    [deleteButton addTarget:self action:@selector(deleteAccountConfirm) forControlEvents:UIControlEventTouchUpInside];
     return deleteButton;
 }
 

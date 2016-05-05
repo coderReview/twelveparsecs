@@ -9,8 +9,9 @@
 #import "SObjectDataSpec.h"
 
 extern NSString * const kProductNameField;
-extern NSString * const kProductDescriptionField;
-extern NSString * const kProductSKUField;
+extern NSString * const kProductAmountField;
+extern NSString * const kProductCodeField;
+extern NSString * const kProductVersionField;
 
 /**
  * Object to hold Product data specification.

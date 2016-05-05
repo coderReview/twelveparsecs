@@ -101,12 +101,12 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
     ProductSObjectData *obj = [self.dataMgr.dataRows objectAtIndex:indexPath.row];
     cell.textLabel.text = [self formatTitle:obj.name];
     cell.textLabel.font = [UIFont systemFontOfSize:kProductTitleFontSize];
-    cell.detailTextLabel.text = [self formatTitle:obj.productDescription];
+    cell.detailTextLabel.text = [self formatTitle:obj.code];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:kProductDetailFontSize];
     cell.detailTextLabel.textColor = [[self class] colorFromRgbHexValue:kProductTitleTextColor];
     cell.imageView.image = nil;
 
-    cell.accessoryView = [self accessoryViewForContact:obj];
+    cell.accessoryView = [self accessoryViewForObject:obj];
 
     return cell;
 }

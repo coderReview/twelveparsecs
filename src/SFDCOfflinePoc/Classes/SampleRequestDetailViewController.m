@@ -10,10 +10,10 @@
 #import "SampleRequestSObjectDataSpec.h"
 #import "SampleRequestSObjectData.h"
 #import "ProductSObjectData.h"
-#import "ContactSObjectData.h"
+#import "AccountSObjectData.h"
 #import "Helper.h"
 
-#define kTagContact 1000
+#define kTagAccount 1000
 #define kTagProduct 1001
 #define kTagStatus 1002
 #define kTagDeliveryDate 1003
@@ -32,10 +32,10 @@
 
 @property (nonatomic, assign) NSInteger editTextTag;
 @property (nonatomic, strong) NSArray *statusArray;
-@property (nonatomic, strong) ContactSObjectData *contactObject;
+@property (nonatomic, strong) AccountSObjectData *accountObject;
 @property (nonatomic, strong) ProductSObjectData *productObject;
 
-@property (nonatomic, strong) NSPredicate *contactPredicate;
+@property (nonatomic, strong) NSPredicate *accountPredicate;
 @property (nonatomic, strong) NSPredicate *productPredicate;
 
 // View / UI properties
@@ -50,7 +50,7 @@
     BOOL isCurrentUser;
 }
 
-@synthesize contactMgr, productMgr;
+@synthesize accountMgr, productMgr;
 
 /**
  Initialize a new sample request detail view controller.
@@ -97,7 +97,7 @@
 
 - (void)loadView {
     [super loadView];
-
+    
     // Toast view
     self.toastView = [[UIView alloc] initWithFrame:CGRectZero];
     self.toastView.backgroundColor = [UIColor colorWithRed:(38.0 / 255.0) green:(38.0 / 255.0) blue:(38.0 / 255.0) alpha:0.7];
@@ -110,8 +110,8 @@
     [self.toastView addSubview:self.toastViewMessageLabel];
     [self.view addSubview:self.toastView];
 
-    self.contactPredicate = [NSPredicate predicateWithBlock:^BOOL(ContactSObjectData *obj, NSDictionary *bindings) {
-        return ![self.contactMgr dataLocallyCreated:obj];
+    self.accountPredicate = [NSPredicate predicateWithBlock:^BOOL(AccountSObjectData *obj, NSDictionary *bindings) {
+        return ![self.accountMgr dataLocallyCreated:obj];
     }];
     self.productPredicate = [NSPredicate predicateWithBlock:^BOOL(ProductSObjectData *obj, NSDictionary *bindings) {
         return ![self.productMgr dataLocallyCreated:obj];
@@ -130,7 +130,7 @@
 
     [self.tableView setAllowsSelection:NO];
 
-    self.contactObject = self.isNewSampleRequest ? [self.contactMgr.dataRows objectAtIndex:0] : [self.contactMgr findById:self.sampleRequest.contactId];
+    self.accountObject = self.isNewSampleRequest ? [self.accountMgr.dataRows objectAtIndex:0] : [self.accountMgr findById:self.sampleRequest.accountId];
     self.productObject = self.isNewSampleRequest ? [self.productMgr.dataRows objectAtIndex:0] : [self.productMgr findById:self.sampleRequest.productId];
 
     if (self.isNewSampleRequest) {
@@ -173,9 +173,7 @@
             cell.textLabel.text = nil;
             UITextField *editField = sampleRequestData[3];
             editField.frame = cell.contentView.bounds;
-            if (sampleRequestData[1] == kSampleRequestNameField ||
-                sampleRequestData[1] == kSampleRequestAuthorizedUsersField ||
-                (sampleRequestData[1] == kSampleRequestDeliveryDateField && self.isNewSampleRequest)) {
+            if (sampleRequestData[1] == kSampleRequestNameField) {
                 editField.delegate = self; // will disable the text field
             } else if (sampleRequestData[1] == kSampleRequestQuantityField) {
                 editField.keyboardType = UIKeyboardTypeNumberPad;
@@ -210,9 +208,9 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     NSString *value = nil;
 
-    if (self.editTextTag == kTagContact) {
-        self.contactObject = [[self.contactMgr.dataRows filteredArrayUsingPredicate:self.contactPredicate] objectAtIndex:row];
-        value = [self formatNameFromContact:self.contactObject];
+    if (self.editTextTag == kTagAccount) {
+        self.accountObject = [[self.accountMgr.dataRows filteredArrayUsingPredicate:self.accountPredicate] objectAtIndex:row];
+        value = [self formatNameFromAccount:self.accountObject];
     } else if (self.editTextTag == kTagProduct) {
         self.productObject = [[self.productMgr.dataRows filteredArrayUsingPredicate:self.productPredicate] objectAtIndex:row];
         value = [self formatNameFromProduct:self.productObject];
@@ -225,8 +223,8 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    if (self.editTextTag == kTagContact) {
-        return [self.contactMgr.dataRows filteredArrayUsingPredicate:self.contactPredicate].count;
+    if (self.editTextTag == kTagAccount) {
+        return [self.accountMgr.dataRows filteredArrayUsingPredicate:self.accountPredicate].count;
     } else if (self.editTextTag == kTagProduct) {
         return [self.productMgr.dataRows filteredArrayUsingPredicate:self.productPredicate].count;
     } else if (self.editTextTag == kTagStatus) {
@@ -237,9 +235,9 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow: (NSInteger)row forComponent:(NSInteger)component {
-    if (self.editTextTag == kTagContact) {
-        ContactSObjectData *obj = [[self.contactMgr.dataRows filteredArrayUsingPredicate:self.contactPredicate] objectAtIndex:row];
-        return [self formatNameFromContact:obj];
+    if (self.editTextTag == kTagAccount) {
+        AccountSObjectData *obj = [[self.accountMgr.dataRows filteredArrayUsingPredicate:self.accountPredicate] objectAtIndex:row];
+        return [self formatNameFromAccount:obj];
     } else if (self.editTextTag == kTagProduct) {
         return [[[self.productMgr.dataRows filteredArrayUsingPredicate:self.productPredicate] objectAtIndex:row] name];
     } else if (self.editTextTag == kTagStatus) {
@@ -252,11 +250,11 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    return (isCurrentUser && textField.tag >= kTagContact) && !(self.isNewSampleRequest && textField.tag == kTagDeliveryDate);
+    return (isCurrentUser && textField.tag >= kTagAccount) && !(self.isNewSampleRequest && textField.tag == kTagDeliveryDate);
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField.tag < kTagContact) {
+    if (textField.tag < kTagAccount) {
         [textField resignFirstResponder];
     }
 
@@ -289,8 +287,8 @@
     [self.pickerView reloadAllComponents];
     [textField reloadInputViews];
 
-    if (self.editTextTag == kTagContact) {
-        row = [[self.contactMgr.dataRows filteredArrayUsingPredicate:self.contactPredicate] indexOfObject:self.contactObject];
+    if (self.editTextTag == kTagAccount) {
+        row = [[self.accountMgr.dataRows filteredArrayUsingPredicate:self.accountPredicate] indexOfObject:self.accountObject];
     } else if (self.editTextTag == kTagProduct) {
         row = [[self.productMgr.dataRows filteredArrayUsingPredicate:self.productPredicate] indexOfObject:self.productObject];
     } else if (self.editTextTag == kTagStatus) {
@@ -326,10 +324,7 @@
 
 - (NSArray *)dataRowsFromSampleRequest {
     if (self.isNewSampleRequest) {
-        self.sampleRequestDataRows = @[ @[ @"Contact",
-                                     kSampleRequestContactField,
-                                     [[self class] emptyStringForNullValue:[self formatNameFromContact:self.contactObject]],
-                                     [self dataTextFieldPicker:[self formatNameFromContact:self.contactObject] tag:kTagContact] ],
+        self.sampleRequestDataRows = @[
                                   @[ @"Product",
                                      kSampleRequestProductField,
                                      [[self class] emptyStringForNullValue:[self formatNameFromProduct:self.productObject]],
@@ -348,10 +343,10 @@
                                      kSampleRequestNameField,
                                      [[self class] emptyStringForNullValue:self.sampleRequest.name ? self.sampleRequest.name : @"Please sync"],
                                      [self dataTextField:self.sampleRequest.name ? self.sampleRequest.name : @"Please sync"] ],
-                                  @[ @"Contact",
-                                     kSampleRequestContactField,
-                                     [[self class] emptyStringForNullValue:[self formatNameFromContact:self.contactObject]],
-                                     [self dataTextFieldPicker:[self formatNameFromContact:self.contactObject] tag:kTagContact] ],
+                                  @[ @"Account",
+                                     kSampleRequestAccountField,
+                                     [[self class] emptyStringForNullValue:[self formatNameFromAccount:self.accountObject]],
+                                     [self dataTextFieldPicker:[self formatNameFromAccount:self.accountObject] tag:kTagAccount] ],
                                   @[ @"Product",
                                      kSampleRequestProductField,
                                      [[self class] emptyStringForNullValue:[self formatNameFromProduct:self.productObject]],
@@ -363,16 +358,7 @@
                                   @[ @"Status",
                                      kSampleRequestStatusField,
                                      [[self class] emptyStringForNullValue:self.sampleRequest.status],
-                                     [self dataTextFieldPicker:self.sampleRequest.status tag:kTagStatus] ],
-                                 @[ @"Delivery Date",
-                                     kSampleRequestDeliveryDateField,
-                                     [[self class] emptyStringForNullValue:self.sampleRequest.deliveryDate],
-                                    [self dataTextFieldPicker:self.sampleRequest.deliveryDate tag:kTagDeliveryDate] ],
-                                 @[ @"Authorized Users",
-                                     kSampleRequestAuthorizedUsersField,
-                                    [[self class] emptyStringForNullValue:[self formatAuthorizedUsers]],
-                                    [self dataTextField:[self formatAuthorizedUsers]] ]
-
+                                     [self dataTextFieldPicker:self.sampleRequest.status tag:kTagStatus] ]
                                  ];
     }
 
@@ -389,7 +375,7 @@
 - (void)editSampleRequest {
     self.isEditing = YES;
     if (!self.isNewSampleRequest) {
-        // Buttons will already be set for new contact case.
+        // Buttons will already be set for new account case.
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelEditSampleRequest)];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveSampleRequest)];
     }
@@ -398,9 +384,9 @@
     [self.tableView reloadData];
     __weak SampleRequestDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.contactObject) {
-            UITextField *field = [self.view viewWithTag:kTagContact];
-            field.text = [self formatNameFromContact:self.contactObject];
+        if (self.accountObject) {
+            UITextField *field = [self.view viewWithTag:kTagAccount];
+            field.text = [self formatNameFromAccount:self.accountObject];
         }
         if (self.productObject) {
             UITextField *field = [self.view viewWithTag:kTagProduct];
@@ -427,10 +413,10 @@
         NSString *origFieldData = fieldArray[2];
         id newFieldData = ((UITextField *)fieldArray[3]).text;
         if ((self.isNewSampleRequest && newFieldData) || ![newFieldData isEqualToString:origFieldData]) {
-            if ([fieldName isEqualToString:kSampleRequestContactField]) {
-                newFieldData = self.contactObject.objectId;
+            if ([fieldName isEqualToString:kSampleRequestAccountField]) {
+                newFieldData = self.accountObject.objectId;
                 if (!newFieldData) {
-                    [Helper showToast:self.toastView message:@"Please select a contact" label:self.toastViewMessageLabel];
+                    [Helper showToast:self.toastView message:@"Please select a account" label:self.toastViewMessageLabel];
                     return;
                 }
             } else if ([fieldName isEqualToString:kSampleRequestProductField]) {
@@ -447,12 +433,12 @@
                     [Helper showToast:self.toastView message:@"Please select a quantity" label:self.toastViewMessageLabel];
                     return;
                 }
-            } else if ([fieldName isEqualToString:kSampleRequestDeliveryDateField]) {
+            }/* else if ([fieldName isEqualToString:kSampleRequestDeliveryDateField]) {
                 NSString *date = newFieldData;
                 if (!date || date.length == 0) {
                     continue;
                 }
-            }
+            }*/
             [self.sampleRequest updateSoupForFieldName:fieldName fieldValue:newFieldData];
             self.sampleRequestUpdated = YES;
         }
@@ -562,41 +548,12 @@
     }
 }
 
-- (NSString *)formatAuthorizedUsers {
-    NSArray *userRecords = self.sampleRequest.userRecords;
-    if (!userRecords) return @"";
-
-    NSMutableString *string = [NSMutableString string];
-    for (int i = 0; i < userRecords.count; i++) {
-        NSDictionary *userDict = [[userRecords objectAtIndex:i] objectForKey:@"User__r"];
-        [string appendString:[userDict objectForKey:@"Name"]];
-        if (i < userRecords.count - 1) {
-            [string appendString:@", "];
-        }
-    }
-    return string;
-}
-
 - (NSString *)formatNameFromProduct:(ProductSObjectData *)product {
     return product ? product.name : (self.sampleRequest.productName ? self.sampleRequest.productName : @"");
 }
 
-- (NSString *)formatNameFromContact:(ContactSObjectData *)contact {
-    if (!contact) {
-        return self.sampleRequest.contactName ? self.sampleRequest.contactName : @"";
-    }
-
-    NSString *firstName = [contact.firstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *lastName = [contact.lastName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (firstName == nil && lastName == nil) {
-        return @"";
-    } else if (firstName == nil && lastName != nil) {
-        return lastName;
-    } else if (firstName != nil && lastName == nil) {
-        return firstName;
-    } else {
-        return [NSString stringWithFormat:@"%@ %@", firstName, lastName];
-    }
+- (NSString *)formatNameFromAccount:(AccountSObjectData *)account {
+    return account ? account.name : (self.sampleRequest.accountName ? self.sampleRequest.accountName : @"");
 }
 
 @end

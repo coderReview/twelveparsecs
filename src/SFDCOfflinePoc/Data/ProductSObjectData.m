@@ -31,20 +31,28 @@
     [self updateSoupForFieldName:kProductNameField fieldValue:name];
 }
 
-- (NSString *)productDescription {
-    return [self nonNullFieldValue:kProductDescriptionField];
+- (NSNumber *)amount {
+    return [self nonNullFieldValue:kProductAmountField];
 }
 
-- (void)setProductDescription:(NSString *)description {
-    [self updateSoupForFieldName:kProductDescriptionField fieldValue:description];
+- (void)setAmount:(NSNumber *)amount {
+    [self updateSoupForFieldName:kProductAmountField fieldValue:amount];
 }
 
-- (NSString *)sku {
-    return [self nonNullFieldValue:kProductSKUField];
+- (NSString *)code {
+    return [self nonNullFieldValue:kProductCodeField];
 }
 
-- (void)setSku:(NSString *)sku {
-    [self updateSoupForFieldName:kProductSKUField fieldValue:sku];
+- (void)setCode:(NSString *)code {
+    [self updateSoupForFieldName:kProductCodeField fieldValue:code];
+}
+
+- (NSNumber *)version {
+    return [self nonNullFieldValue:kProductVersionField];
+}
+
+- (void)setVersion:(NSNumber *)version {
+    [self updateSoupForFieldName:kProductVersionField fieldValue:version];
 }
 
 @end

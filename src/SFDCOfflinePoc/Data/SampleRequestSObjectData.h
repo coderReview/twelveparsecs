@@ -17,14 +17,11 @@
 @interface SampleRequestSObjectData : SObjectData
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *contactId;
-@property (nonatomic, copy) NSString *contactName;
+@property (nonatomic, copy) NSString *accountId;
+@property (nonatomic, copy) NSString *accountName;
 @property (nonatomic, copy) NSString *productId;
 @property (nonatomic, copy) NSString *productName;
-@property (nonatomic, copy) NSString *deliveryDate;
 @property (nonatomic, copy) NSNumber *quantity;
 @property (nonatomic, copy) NSString *status;
-@property (nonatomic, copy) NSDictionary *authorizedUsers;
-@property (nonatomic, copy) NSArray *userRecords;
 
 @end

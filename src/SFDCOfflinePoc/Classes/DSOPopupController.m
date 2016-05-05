@@ -22,24 +22,17 @@
  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ActionsPopupController.h"
-#import "AccountListViewController.h"
+#import "DSOPopupController.h"
+#import "SampleRequestListViewController.h"
+#import "FormDSOSObjectData.h"
 
-//action constants
-NSString *const kActionLogout = @"Logout";
-NSString *const kActionSwitchUser = @"Switch user";
-NSString *const kActionDbInspector = @"Inspect db";
+@implementation DSOPopupController
 
-
-@implementation ActionsPopupController
-
-- (id)initWithAppViewController:(AccountListViewController *)appViewController {
+- (id)initWithAppViewController:(SampleRequestListViewController *)appViewController dsos:(NSArray *) dsos {
     self = [super init];
     if (self) {
         self.appViewController = appViewController;
-        self.actions = @[kActionLogout, @"Logout current user",
-                         kActionSwitchUser, @"Bring up user switching screen",
-                         kActionDbInspector, @"Bring up db inspector"];
+        self.actions = dsos;
     }
     return self;
 }
@@ -61,7 +54,7 @@ NSString *const kActionDbInspector = @"Inspect db";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.actions.count / 2;
+    return self.actions.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -72,9 +65,11 @@ NSString *const kActionDbInspector = @"Inspect db";
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
+
+    FormDSOSObjectData *object = self.actions[indexPath.row];
     
-    cell.textLabel.text = self.actions[indexPath.row * 2];
-    cell.detailTextLabel.text = self.actions[indexPath.row * 2+1];
+    cell.textLabel.text = [NSString stringWithFormat:@"name: %@", object.name];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Code: %@", object.code];
     return cell;
 }
 
@@ -82,8 +77,7 @@ NSString *const kActionDbInspector = @"Inspect db";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *text = self.actions[indexPath.row * 2];
-    [self.appViewController popoverOptionSelected:text];
+    [self.appViewController popoverOptionObjectSelected:self.actions[indexPath.row]];
 }
 
 @end

@@ -36,6 +36,8 @@ static NSUInteger const kSearchHeaderBackgroundColor    = 0xafb6bb;
 static CGFloat    const kControlBuffer                  = 5.0;
 static CGFloat    const kSearchHeaderHeight             = 50.0;
 static CGFloat    const kTableViewRowHeight             = 60.0;
+static CGFloat    const kInitialsCircleDiameter         = 50.0;
+static CGFloat    const kInitialsFontSize               = 19.0;
 
 @interface BaseListViewController () <UISearchBarDelegate>
 
@@ -59,8 +61,10 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
 @implementation BaseListViewController
 
 @synthesize dataMgr;
-@synthesize contactDataMgr;
+@synthesize accountDataMgr;
 @synthesize productDataMgr;
+@synthesize formRequestDataMgr;
+@synthesize formDSODataMgr;
 @synthesize sampleRequestDataMgr;
 
 #pragma mark - init/setup
@@ -102,10 +106,17 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
     self.searchHeader.backgroundColor = [[self class] colorFromRgbHexValue:kSearchHeaderBackgroundColor];
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.searchBar.barTintColor = [[self class] colorFromRgbHexValue:kSearchHeaderBackgroundColor];
     self.searchBar.placeholder = @"Search";
     self.searchBar.delegate = self;
     [self.searchHeader addSubview:self.searchBar];
+
+    self.formHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 50.0, self.view.frame.size.width, kSearchHeaderHeight)];
+    self.formHeader.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.formHeader.backgroundColor = [UIColor colorWithRed:(0.0 / 255.0) green:(200.0 / 255.0) blue:(200.0 / 255.0) alpha:0.7];
+    self.formHeader.hidden = YES;
+    [self.searchHeader addSubview:self.formHeader];
     
     // Toast view
     self.toastView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -155,7 +166,7 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0)
-        return kSearchHeaderHeight;
+        return kSearchHeaderHeight * (self.formHeader.hidden ? 1 : 2);
     else
         return 0;
 }
@@ -210,7 +221,7 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
  @param obj the object used to create the accessory.
  @return the created accessory view.
  */
-- (UIView *)accessoryViewForContact:(SObjectData *)obj {
+- (UIView *)accessoryViewForObject:(SObjectData *)obj {
     static UIImage *sLocalAddImage = nil;
     static UIImage *sLocalUpdateImage = nil;
     static UIImage *sLocalDeleteImage = nil;
@@ -344,6 +355,10 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
     [self.tableView addGestureRecognizer:tableViewTapGesture];
 }
 
+- (void)popoverOptionObjectSelected:(SObjectData *)object {
+    // to overrided
+}
+
 - (void)popoverOptionSelected:(NSString *)text {
     [self.popOverController dismissPopoverAnimated:YES];
     
@@ -377,7 +392,8 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
     //
     // searchHeader
     //
-    CGRect searchHeaderFrame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, kSearchHeaderHeight);
+    CGRect searchHeaderFrame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width,
+                                          kSearchHeaderHeight * (self.formHeader.hidden ? 1 : 2));
     self.searchHeader.frame = searchHeaderFrame;
     
     //
@@ -386,8 +402,36 @@ static CGFloat    const kTableViewRowHeight             = 60.0;
     CGRect searchBarFrame = CGRectMake(0,
                                        0,
                                        self.searchHeader.frame.size.width,
-                                       self.searchHeader.frame.size.height);
+                                       self.searchHeader.frame.size.height / (self.formHeader.hidden ? 1 : 2));
     self.searchBar.frame = searchBarFrame;
+}
+
+- (UIImage *)initialsBackgroundImageWithColor:(UIColor *)circleColor initials:(NSString *)initials {
+
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(kInitialsCircleDiameter, kInitialsCircleDiameter), NO, [UIScreen mainScreen].scale);
+
+    // Draw the circle.
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    UIGraphicsPushContext(context);
+    CGPoint circleCenter = CGPointMake(kInitialsCircleDiameter / 2.0, kInitialsCircleDiameter / 2.0);
+    CGContextSetFillColorWithColor(context, [circleColor CGColor]);
+    CGContextBeginPath(context);
+    CGContextAddArc(context, circleCenter.x, circleCenter.y, kInitialsCircleDiameter / 2.0, 0, 2*M_PI, 0);
+    CGContextFillPath(context);
+
+    // Draw the initials.
+    NSDictionary *initialsAttrs = @{ NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont systemFontOfSize:kInitialsFontSize] };
+    CGSize initialsTextSize = [initials sizeWithAttributes:initialsAttrs];
+    CGRect initialsRect = CGRectMake(circleCenter.x - (initialsTextSize.width / 2.0), circleCenter.y - (initialsTextSize.height / 2.0), initialsTextSize.width, initialsTextSize.height);
+    [initials drawInRect:initialsRect withAttributes:initialsAttrs];
+
+    UIGraphicsPopContext();
+
+    UIImage *imageFromGraphicsContext = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+
+    return imageFromGraphicsContext;
 }
 
 #pragma mark - Passcode handling

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015, salesforce.com, inc. All rights reserved.
+ Copyright (c) 2014, salesforce.com, inc. All rights reserved.
  
  Redistribution and use of this software in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -22,20 +22,30 @@
  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <UIKit/UIKit.h>
+//
+//  AccountSObjectData.h
+//  SFDCOfflinePoc
+//
+//  Created by pvmagacho on 5/1/16.
+//  Copyright © 2016 Topcoder Inc. All rights reserved.
+//
 
-@class AccountListViewController;
+#import <Foundation/Foundation.h>
+#import "SObjectData.h"
 
-//action constants
-extern NSString *const kActionLogout;
-extern NSString *const kActionSwitchUser;
-extern NSString *const kActionDbInspector;
+/**
+ * Object to hold Account information.
+ *
+ * @author pvmagacho
+ * @version 1.0
+ */
+@interface AccountSObjectData : SObjectData
 
-@interface ActionsPopupController : UITableViewController
-
-@property (nonatomic, strong) NSArray *actions;
-@property (nonatomic, strong) AccountListViewController *appViewController;
-
-- (id)initWithAppViewController:(AccountListViewController *)appViewController;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *accountNumber;
+@property (nonatomic, copy) NSString *website;
+@property (nonatomic, copy) NSString *phone;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *industry;
 
 @end

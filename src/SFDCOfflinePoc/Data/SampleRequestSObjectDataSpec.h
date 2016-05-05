@@ -9,16 +9,17 @@
 #import "SObjectDataSpec.h"
 
 extern NSString * const kSampleRequestNameField;
-extern NSString * const kSampleRequestContactQuery;
-extern NSString * const kSampleRequestContactQueryField;
-extern NSString * const kSampleRequestContactField;
+extern NSString * const kSampleRequestAccountQuery;
+extern NSString * const kSampleRequestAccountQueryField;
+extern NSString * const kSampleRequestAccountField;
 extern NSString * const kSampleRequestProductQuery;
 extern NSString * const kSampleRequestProductQueryField;
 extern NSString * const kSampleRequestProductField;
-extern NSString * const kSampleRequestDeliveryDateField;
 extern NSString * const kSampleRequestQuantityField;
 extern NSString * const kSampleRequestStatusField;
-extern NSString * const kSampleRequestAuthorizedUsersField;
+extern NSString * const kSampleRequestFormRequestQuery;
+extern NSString * const kSampleRequestFormRequestField;
+extern NSString * const kSampleRequestFormRequestField;
 
 /**
  * Object to hold Sample Request data specification.

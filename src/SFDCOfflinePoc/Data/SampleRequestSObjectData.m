@@ -31,16 +31,16 @@
     [self updateSoupForFieldName:kSampleRequestNameField fieldValue:name];
 }
 
-- (NSString *)contactId {
-    return [self nonNullFieldValue:kSampleRequestContactField];
+- (NSString *)accountId {
+    return [self nonNullFieldValue:kSampleRequestAccountField];
 }
 
-- (void)setContactId:(NSString *)contactId {
-    [self updateSoupForFieldName:kSampleRequestContactField fieldValue:contactId];
+- (void)setAccountId:(NSString *)accountId {
+    [self updateSoupForFieldName:kSampleRequestAccountField fieldValue:accountId];
 }
 
-- (NSString *)contactName {
-    return [[self nonNullFieldValue:kSampleRequestContactQueryField] objectForKey:@"Name"];
+- (NSString *)accountName {
+    return [[self nonNullFieldValue:kSampleRequestAccountQueryField] objectForKey:@"Name"];
 }
 
 - (NSString *)productId {
@@ -53,14 +53,6 @@
 
 - (NSString *)productName {
     return [[self nonNullFieldValue:kSampleRequestProductQueryField] objectForKey:@"Name"];
-}
-
-- (NSString *)deliveryDate {
-    return [self nonNullFieldValue:kSampleRequestDeliveryDateField];
-}
-
-- (void)setDeliveryDate:(NSString *)deliveryDate {
-    [self updateSoupForFieldName:kSampleRequestDeliveryDateField fieldValue:deliveryDate];
 }
 
 - (NSString *)quantity {
@@ -79,20 +71,5 @@
     [self updateSoupForFieldName:kSampleRequestStatusField fieldValue:status];
 }
 
-- (NSDictionary *)authorizedUsers {
-    return [self nonNullFieldValue:kSampleRequestAuthorizedUsersField];
-}
-
-- (void)setAuthorizedUsers:(NSDictionary *)authorizedUsers {
-    [self updateSoupForFieldName:kSampleRequestAuthorizedUsersField fieldValue:authorizedUsers];
-}
-
-- (NSArray *) userRecords {
-    int totalSize = [[self.authorizedUsers objectForKey:@"totalSize"] intValue];
-    if (totalSize > 0) {
-        return [self.authorizedUsers objectForKey:@"records"];
-    }
-    return nil;
-}
 
 @end

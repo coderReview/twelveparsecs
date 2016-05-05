@@ -12,7 +12,7 @@
 
 @interface SampleRequestDetailViewController : UITableViewController <UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (nonatomic, strong) SObjectDataManager *contactMgr;
+@property (nonatomic, strong) SObjectDataManager *accountMgr;
 @property (nonatomic, strong) SObjectDataManager *productMgr;
 
 /**

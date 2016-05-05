@@ -1,5 +1,5 @@
 //
-//  ContactDetailViewController.h
+//  AccountDetailViewController.h
 //  SFDCOfflinePoc
 //
 //  Created by pvmagacho on 1/24/16.
@@ -7,17 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ContactSObjectData.h"
+#import "AccountSObjectData.h"
 #import "SObjectDataManager.h"
 
-@interface ContactDetailViewController : UITableViewController <UITableViewDataSource>
+@interface AccountDetailViewController : UITableViewController <UITableViewDataSource>
 
 /**
  Initialize a new contact detail view controller.
  @param dataMgr the data manager object.
  @param saveBlock the block to be called when data is saved.
  */
-- (id)initForNewContactWithDataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock;
+- (id)initForNewAccountWithDataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock;
 
 /**
  Initialize with an existing contact detail view controller.
@@ -25,6 +25,6 @@
  @param dataMgr the data manager object.
  @param saveBlock the block to be called when data is saved.
  */
-- (id)initWithContact:(ContactSObjectData *)contact dataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock;
+- (id)initWithAccount:(AccountSObjectData *)contact dataManager:(SObjectDataManager *)dataMgr saveBlock:(void (^)(void))saveBlock;
 
 @end

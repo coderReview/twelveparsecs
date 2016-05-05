@@ -29,19 +29,26 @@
 #import "SObjectData.h"
 
 static CGFloat    const kNavBarTitleFontSize            = 20.0;
+static CGFloat    const kFormHeaderFontSize             = 18.0;
 static NSUInteger const kNavBarTintColor                = 0xf10000;
 
 @class SObjectDataManager;
 
 @interface BaseListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
+// View / UI properties
+@property (nonatomic, strong) UIView *formHeader;
+
 // Data properties
 @property (nonatomic, strong) SObjectDataManager *dataMgr;
-@property (nonatomic, strong) SObjectDataManager *contactDataMgr;
+@property (nonatomic, strong) SObjectDataManager *accountDataMgr;
 @property (nonatomic, strong) SObjectDataManager *productDataMgr;
+@property (nonatomic, strong) SObjectDataManager *formRequestDataMgr;
+@property (nonatomic, strong) SObjectDataManager *formDSODataMgr;
 @property (nonatomic, strong) SObjectDataManager *sampleRequestDataMgr;
 
 // Popover methods for handling Salesforce login.
+- (void)popoverOptionObjectSelected:(SObjectData *)object;
 - (void)popoverOptionSelected:(NSString *)text;
 - (void)clearPopovers:(NSNotification *)note;
 
@@ -64,7 +71,9 @@ static NSUInteger const kNavBarTintColor                = 0xf10000;
  @param obj the object used to create the accessory.
  @return the created accessory view.
  */
-- (UIView *)accessoryViewForContact:(SObjectData *)contact;
+- (UIView *)accessoryViewForObject:(SObjectData *)contact;
+
+- (UIImage *)initialsBackgroundImageWithColor:(UIColor *)circleColor initials:(NSString *)initials;
 
 /*!
  Synchronize up/down all records for current data manager.

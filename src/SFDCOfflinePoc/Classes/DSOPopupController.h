@@ -24,18 +24,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class AccountListViewController;
+@class SampleRequestListViewController;
 
-//action constants
-extern NSString *const kActionLogout;
-extern NSString *const kActionSwitchUser;
-extern NSString *const kActionDbInspector;
-
-@interface ActionsPopupController : UITableViewController
+@interface DSOPopupController : UITableViewController
 
 @property (nonatomic, strong) NSArray *actions;
-@property (nonatomic, strong) AccountListViewController *appViewController;
+@property (nonatomic, strong) SampleRequestListViewController *appViewController;
 
-- (id)initWithAppViewController:(AccountListViewController *)appViewController;
+- (id)initWithAppViewController:(SampleRequestListViewController *)appViewController dsos:(NSArray *) dsos;
 
 @end

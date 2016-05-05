@@ -24,7 +24,7 @@
 
 #import "AppDelegate.h"
 #import "InitialViewController.h"
-#import "ContactListViewController.h"
+#import "AccountListViewController.h"
 #import "ProductsListViewController.h"
 #import "SampleRequestListViewController.h"
 #import "TabBarViewController.h"
@@ -136,8 +136,8 @@ static NSString * const OAuthRedirectURI        = @"testsfdc:///mobilesdk/detect
 
 - (void)setupRootViewController
 {
-    ContactListViewController *contactVC = [[ContactListViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *cnavVC = [[UINavigationController alloc] initWithRootViewController:contactVC];
+    AccountListViewController *accountVC = [[AccountListViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *cnavVC = [[UINavigationController alloc] initWithRootViewController:accountVC];
     cnavVC.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:0];
 
     ProductsListViewController *productVC = [[ProductsListViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -150,20 +150,20 @@ static NSString * const OAuthRedirectURI        = @"testsfdc:///mobilesdk/detect
 
     TabBarViewController *tabVC = [[TabBarViewController alloc] init];
     tabVC.viewControllers = [NSArray arrayWithObjects:cnavVC, pnavVC, snavVC, nil];
-    tabVC.mgrArray = [NSArray arrayWithObjects:contactVC.dataMgr, productVC.dataMgr, sampleVC.dataMgr, nil];
+    tabVC.mgrArray = [NSArray arrayWithObjects:accountVC.dataMgr, productVC.dataMgr, sampleVC.dataMgr, nil];
 
     // set managers
-    contactVC.contactDataMgr = contactVC.dataMgr;
-    contactVC.productDataMgr = productVC.dataMgr;
-    contactVC.sampleRequestDataMgr = sampleVC.dataMgr;
+    accountVC.accountDataMgr = accountVC.dataMgr;
+    accountVC.productDataMgr = productVC.dataMgr;
+    accountVC.sampleRequestDataMgr = sampleVC.dataMgr;
 
     // set managers
-    productVC.contactDataMgr = contactVC.dataMgr;
+    productVC.accountDataMgr = accountVC.dataMgr;
     productVC.productDataMgr = productVC.dataMgr;
     productVC.sampleRequestDataMgr = sampleVC.dataMgr;
 
     // set managers
-    sampleVC.contactDataMgr = contactVC.dataMgr;
+    sampleVC.accountDataMgr = accountVC.dataMgr;
     sampleVC.productDataMgr = productVC.dataMgr;
     sampleVC.sampleRequestDataMgr = sampleVC.dataMgr;
 

@@ -1,5 +1,5 @@
 //
-//  ProductSObjectData.h
+//  FormDSOSObjectData.h
 //  SFDCOfflinePoc
 //
 //  Created by pvmagacho on 1/24/16.
@@ -10,16 +10,16 @@
 #import "SObjectData.h"
 
 /**
- * Object to hold Product information.
+ * Object to hold FormDSO information.
  *
  * @author pvmagacho
  * @version 1.0
  */
-@interface ProductSObjectData : SObjectData
+@interface FormDSOSObjectData : SObjectData
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSNumber *amount;
 @property (nonatomic, copy) NSString *code;
-@property (nonatomic, copy) NSNumber *version;
+@property (nonatomic, copy) NSString *locationName;
+@property (nonatomic, copy) NSString *shipTo;
 
 @end

@@ -9,47 +9,43 @@
 #import "SampleRequestSObjectDataSpec.h"
 #import "SampleRequestSObjectData.h"
 
-NSString * const kSampleRequestNameField         = @"Name";
-NSString * const kSampleRequestContactQuery      = @"Contact__r.Name";
-NSString * const kSampleRequestContactQueryField = @"Contact__r";
-NSString * const kSampleRequestContactField      = @"Contact__c";
-NSString * const kSampleRequestProductQuery      = @"Product__r.Name";
-NSString * const kSampleRequestProductQueryField = @"Product__r";
-NSString * const kSampleRequestProductField      = @"Product__c";
-NSString * const kSampleRequestDeliveryDateField = @"Delivery_Date__c";
-NSString * const kSampleRequestQuantityField     = @"Quantity__c";
-NSString * const kSampleRequestStatusField       = @"Status__c";
-NSString * const kSampleRequestAuthorizedUsersQuery = @"(SELECT User__r.Name, User__c FROM Authorized_Users__r)";
-NSString * const kSampleRequestAuthorizedUsersField = @"Authorized_Users__r";
+NSString * const kSampleRequestNameField                = @"Name";
+NSString * const kSampleRequestAccountQuery             = ADD_NAMESPACE(@"HCP_Customer__r.Name");
+NSString * const kSampleRequestAccountQueryField        = ADD_NAMESPACE(@"HCP_Customer__r");
+NSString * const kSampleRequestAccountField             = ADD_NAMESPACE(@"HCP_Customer__c");
+NSString * const kSampleRequestProductQuery             = ADD_NAMESPACE(@"KSRA_Product__r.Name");
+NSString * const kSampleRequestProductQueryField        = ADD_NAMESPACE(@"KSRA_Product__r");
+NSString * const kSampleRequestProductField             = ADD_NAMESPACE(@"KSRA_Product__c");
+NSString * const kSampleRequestQuantityField            = ADD_NAMESPACE(@"Quantity__c");
+NSString * const kSampleRequestStatusField              = ADD_NAMESPACE(@"Status__c");
+NSString * const kSampleRequestFormRequestField         = ADD_NAMESPACE(@"Form_Request__c");
 
 @implementation SampleRequestSObjectDataSpec
 
 - (id)init {
-    NSString *objectType = @"SampleRequest__c";
+    NSString *objectType = ADD_NAMESPACE(@"KSRA_Request_Line_Item__c");
     NSArray *objectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSObjectIdField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectOwnerIdField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestNameField searchable:YES],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestContactQuery searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestContactField searchable:NO],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAccountQuery searchable:NO],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAccountField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestProductQuery searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestProductField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestDeliveryDateField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestQuantityField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestStatusField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAuthorizedUsersQuery searchable:NO]
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestStatusField searchable:NO]
                                    ];
-    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestContactField searchable:NO],
+    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAccountField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestProductField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestDeliveryDateField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestQuantityField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestStatusField searchable:NO]
                                    ];
 
     // Any searchable fields would likely require index specs, if you're searching directly against SmartStore.
-    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kSampleRequestNameField indexType:kSoupIndexTypeString columnName:kSampleRequestNameField]
+    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kSampleRequestNameField indexType:kSoupIndexTypeString
+                                                    columnName:kSampleRequestNameField]
                              ];
 
-    self.whereClause = nil;
+    self.whereClause = [NSString stringWithFormat:@"OwnerId = '%@'", [self.class currentUserID]];
 
     NSString *soupName = @"SampleRequests";
     NSString *orderByFieldName = kSampleRequestNameField;
