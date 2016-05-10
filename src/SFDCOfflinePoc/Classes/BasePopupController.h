@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014, salesforce.com, inc. All rights reserved.
+ Copyright (c) 2015, salesforce.com, inc. All rights reserved.
  
  Redistribution and use of this software in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -22,24 +22,15 @@
  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "SObjectDataSpec.h"
+#import <UIKit/UIKit.h>
 
-static NSString * const kObjectOwnerIdField    = @"OwnerId";
-static NSString * const kObjectNameField       = @"Name";
+@class SampleRequestListViewController;
 
-@interface SObjectData : NSObject
+@interface BasePopupController : UITableViewController
 
-@property (nonatomic, copy) NSString *objectId;
-@property (nonatomic, copy) NSString *ownerId;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, strong) NSDictionary *soupDict;
+@property (nonatomic, strong) NSArray *data;
+@property (nonatomic, strong) SampleRequestListViewController *appViewController;
 
-- (id)initWithSoupDict:(NSDictionary *)soupDict;
-
-- (id)fieldValueForFieldName:(NSString *)fieldName;
-- (void)updateSoupForFieldName:(NSString *)fieldName fieldValue:(id)fieldValue;
-
-+ (SObjectDataSpec *)dataSpec;
+- (id)initWithAppViewController:(SampleRequestListViewController *)appViewController data:(NSArray *) data;
 
 @end

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014, salesforce.com, inc. All rights reserved.
+ Copyright (c) 2015, salesforce.com, inc. All rights reserved.
  
  Redistribution and use of this software in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -22,24 +22,27 @@
  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "SObjectDataSpec.h"
+#import "HCPPopupController.h"
+#import "AccountSObjectData.h"
 
-static NSString * const kObjectOwnerIdField    = @"OwnerId";
-static NSString * const kObjectNameField       = @"Name";
+@implementation HCPPopupController
 
-@interface SObjectData : NSObject
+#pragma mark - Table view data source
 
-@property (nonatomic, copy) NSString *objectId;
-@property (nonatomic, copy) NSString *ownerId;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, strong) NSDictionary *soupDict;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
 
-- (id)initWithSoupDict:(NSDictionary *)soupDict;
-
-- (id)fieldValueForFieldName:(NSString *)fieldName;
-- (void)updateSoupForFieldName:(NSString *)fieldName fieldValue:(id)fieldValue;
-
-+ (SObjectDataSpec *)dataSpec;
+    AccountSObjectData *object = self.data[indexPath.row];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"HCP Id: %@", object.hcpId];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Specialty: %@", object.specialty];
+    return cell;
+}
 
 @end

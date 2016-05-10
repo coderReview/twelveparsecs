@@ -17,7 +17,6 @@
  */
 @interface ProductSObjectData : SObjectData
 
-@property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSNumber *amount;
 @property (nonatomic, copy) NSString *code;
 @property (nonatomic, copy) NSNumber *version;

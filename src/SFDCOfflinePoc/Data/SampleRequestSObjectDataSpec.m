@@ -9,7 +9,6 @@
 #import "SampleRequestSObjectDataSpec.h"
 #import "SampleRequestSObjectData.h"
 
-NSString * const kSampleRequestNameField                = @"Name";
 NSString * const kSampleRequestAccountQuery             = ADD_NAMESPACE(@"HCP_Customer__r.Name");
 NSString * const kSampleRequestAccountQueryField        = ADD_NAMESPACE(@"HCP_Customer__r");
 NSString * const kSampleRequestAccountField             = ADD_NAMESPACE(@"HCP_Customer__c");
@@ -26,7 +25,7 @@ NSString * const kSampleRequestFormRequestField         = ADD_NAMESPACE(@"Form_R
     NSString *objectType = ADD_NAMESPACE(@"KSRA_Request_Line_Item__c");
     NSArray *objectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSObjectIdField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectOwnerIdField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestNameField searchable:YES],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectNameField searchable:YES],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAccountQuery searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAccountField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestProductQuery searchable:NO],
@@ -37,18 +36,18 @@ NSString * const kSampleRequestFormRequestField         = ADD_NAMESPACE(@"Form_R
     NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestAccountField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestProductField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestQuantityField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestStatusField searchable:NO]
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kSampleRequestFormRequestField searchable:NO]
                                    ];
 
     // Any searchable fields would likely require index specs, if you're searching directly against SmartStore.
-    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kSampleRequestNameField indexType:kSoupIndexTypeString
-                                                    columnName:kSampleRequestNameField]
+    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kObjectNameField indexType:kSoupIndexTypeString
+                                                    columnName:kObjectNameField]
                              ];
 
     self.whereClause = [NSString stringWithFormat:@"OwnerId = '%@'", [self.class currentUserID]];
 
     NSString *soupName = @"SampleRequests";
-    NSString *orderByFieldName = kSampleRequestNameField;
+    NSString *orderByFieldName = kObjectNameField;
     return [self initWithObjectType:objectType objectFieldSpecs:objectFieldSpecs updateObjectFieldSpecs:updateObjectFieldSpecs
                          indexSpecs:indexSpecs soupName:soupName orderByFieldName:orderByFieldName];
 }

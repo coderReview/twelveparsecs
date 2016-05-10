@@ -8,7 +8,6 @@
 
 #import "SObjectDataSpec.h"
 
-extern NSString * const kSampleRequestNameField;
 extern NSString * const kSampleRequestAccountQuery;
 extern NSString * const kSampleRequestAccountQueryField;
 extern NSString * const kSampleRequestAccountField;
@@ -18,7 +17,7 @@ extern NSString * const kSampleRequestProductField;
 extern NSString * const kSampleRequestQuantityField;
 extern NSString * const kSampleRequestStatusField;
 extern NSString * const kSampleRequestFormRequestQuery;
-extern NSString * const kSampleRequestFormRequestField;
+extern NSString * const kSampleRequestFormRequestQueryField;
 extern NSString * const kSampleRequestFormRequestField;
 
 /**

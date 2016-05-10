@@ -16,12 +16,12 @@
  */
 @interface SampleRequestSObjectData : SObjectData
 
-@property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *accountId;
 @property (nonatomic, copy) NSString *accountName;
 @property (nonatomic, copy) NSString *productId;
 @property (nonatomic, copy) NSString *productName;
 @property (nonatomic, copy) NSNumber *quantity;
 @property (nonatomic, copy) NSString *status;
+@property (nonatomic, copy) NSString *formRequestId;
 
 @end

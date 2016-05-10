@@ -23,14 +23,8 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "BasePopupController.h"
 
-@class SampleRequestListViewController;
-
-@interface DSOPopupController : UITableViewController
-
-@property (nonatomic, strong) NSArray *actions;
-@property (nonatomic, strong) SampleRequestListViewController *appViewController;
-
-- (id)initWithAppViewController:(SampleRequestListViewController *)appViewController dsos:(NSArray *) dsos;
+@interface DSOPopupController : BasePopupController
 
 @end

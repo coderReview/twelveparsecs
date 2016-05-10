@@ -32,12 +32,12 @@
 
 #import "SObjectDataSpec.h"
 
-extern NSString * const kAccountNameField;
-extern NSString * const kAccountAccountNumberField;
-extern NSString * const kAccountWebsiteField;
-extern NSString * const kAccountPhoneField;
-extern NSString * const kAccountTypeField;
-extern NSString * const kAccountIndustryField;
+extern NSString * const kAccountHCPIdField;
+extern NSString * const kAccountHospitalField;
+extern NSString * const kAccountSpecialtyField;
+extern NSString * const kAccountAccountQuery;
+extern NSString * const kAccountAccountQueryField;
+extern NSString * const kAccountAccountField;
 
 /**
  * Object to hold Account data specification.

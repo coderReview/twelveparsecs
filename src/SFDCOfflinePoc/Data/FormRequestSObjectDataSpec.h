@@ -8,7 +8,6 @@
 
 #import "SObjectDataSpec.h"
 
-extern NSString * const kFormRequestNameField;
 extern NSString * const kFormRequestDSOField;
 extern NSString * const kFormRequestRejectionReasonField;
 extern NSString * const kFormRequestRequestDateField;
@@ -19,6 +18,7 @@ extern NSString * const kFormRequestTotalAmountField;
 extern NSString * const kFormRequestApprovalField;
 extern NSString * const kFormRequestReviewerField;
 extern NSString * const kFormRequestRequestLinesField;
+extern NSString * const kFormRequestFormLinesField;
 
 /**
  * Object to hold Form Request data specification.

@@ -13,6 +13,8 @@
 #import "TabBarViewController.h"
 #import "BaseListViewController.h"
 #import "Helper.h"
+#import "FormRequestSObjectData.h"
+#import "SampleRequestSObjectData.h"
 
 #import "SObjectDataManager.h"
 
@@ -99,12 +101,26 @@
 
     for (SObjectDataManager *dataMgr in self.mgrArray) {
         NSString *name = dataMgr.dataSpec.soupName;
-        if ([[mgr getDirtyRecordIds:name idField:SOUP_ENTRY_ID] count] > 0) {
+        NSSet *dirtyRecords = [mgr getDirtyRecordIds:name idField:SOUP_ENTRY_ID];
+        if ([dirtyRecords count] > 0) {
             [self syncUpDown:dataMgr completionBlock:^(SFSyncState *syncProgressDetails) {
                 @synchronized(self) {
                     if (--count == 0) [self unlock];
 
                     [dataMgr refreshLocalData];
+                    
+                    if ([syncProgressDetails isDone] && [name isEqualToString:@"FormRequests"]) {
+                        SObjectDataManager *manager = [self.mgrArray objectAtIndex:2];
+                        for (FormRequestSObjectData *objMaster in dataMgr.dataRows) {
+                            for (NSDictionary *dict in objMaster.formLines) {
+                                SampleRequestSObjectData *objDetail = [[SampleRequestSObjectData alloc] initWithSoupDict:dict];
+                                objDetail.formRequestId = objMaster.objectId;
+                                [manager createLocalData:objDetail];
+                            }
+                            // objMaster.formLines = [NSMutableArray array];
+                        }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateRecord object:nil];
+                    }
                 }
             }];
         } else {

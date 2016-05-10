@@ -173,7 +173,7 @@
             cell.textLabel.text = nil;
             UITextField *editField = sampleRequestData[3];
             editField.frame = cell.contentView.bounds;
-            if (sampleRequestData[1] == kSampleRequestNameField) {
+            if (sampleRequestData[1] == kObjectNameField) {
                 editField.delegate = self; // will disable the text field
             } else if (sampleRequestData[1] == kSampleRequestQuantityField) {
                 editField.keyboardType = UIKeyboardTypeNumberPad;
@@ -340,7 +340,7 @@
                                   ];
     } else {
         self.sampleRequestDataRows = @[ @[ @"Name",
-                                     kSampleRequestNameField,
+                                     kObjectNameField,
                                      [[self class] emptyStringForNullValue:self.sampleRequest.name ? self.sampleRequest.name : @"Please sync"],
                                      [self dataTextField:self.sampleRequest.name ? self.sampleRequest.name : @"Please sync"] ],
                                   @[ @"Account",

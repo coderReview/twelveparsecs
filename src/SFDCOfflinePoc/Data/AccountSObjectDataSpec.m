@@ -33,43 +33,41 @@
 #import "AccountSObjectDataSpec.h"
 #import "AccountSObjectData.h"
 
-
-NSString * const kAccountNameField              = @"Name";
-NSString * const kAccountAccountNumberField     = @"AccountNumber";
-NSString * const kAccountWebsiteField           = @"Website";
-NSString * const kAccountPhoneField             = @"Phone";
-NSString * const kAccountTypeField              = @"Type";
-NSString * const kAccountIndustryField          = @"Industry";
+NSString * const kAccountHCPIdField             = ADD_NAMESPACE(@"HCP_Id__c");
+NSString * const kAccountHospitalField          = ADD_NAMESPACE(@"Hospital_Clinic__c");
+NSString * const kAccountSpecialtyField         = ADD_NAMESPACE(@"Speciality__c");
+NSString * const kAccountAccountQuery           = ADD_NAMESPACE(@"Account__r.Name");
+NSString * const kAccountAccountQueryField      = ADD_NAMESPACE(@"Account__r");
+NSString * const kAccountAccountField           = ADD_NAMESPACE(@"Account__c");
 
 @implementation AccountSObjectDataSpec
 
 - (id)init {
-    NSString *objectType = @"Account";
+    NSString *objectType = ADD_NAMESPACE(@"GLBL_HCP_Customer__c");
     NSArray *objectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSObjectIdField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectOwnerIdField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountNameField searchable:YES],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountAccountNumberField searchable:YES],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountWebsiteField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountPhoneField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountTypeField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountIndustryField searchable:NO]
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectNameField searchable:YES],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountHCPIdField searchable:NO],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountHospitalField searchable:NO],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountSpecialtyField searchable:NO]
                                    ];
 
-    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountWebsiteField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountPhoneField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountTypeField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountIndustryField searchable:NO]
+    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountHCPIdField searchable:NO],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountHospitalField searchable:NO],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kAccountSpecialtyField searchable:NO]
                                    ];
     
     // Any searchable fields would likely require index specs, if you're searching directly against SmartStore.
-    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kAccountNameField indexType:kSoupIndexTypeString columnName:kAccountNameField],
-                             [[SFSoupIndex alloc] initWithPath:kAccountAccountNumberField indexType:kSoupIndexTypeString columnName:kAccountAccountNumberField]
+    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kObjectNameField indexType:kSoupIndexTypeString
+                                                    columnName:kObjectNameField],
+                             [[SFSoupIndex alloc] initWithPath:kAccountHCPIdField indexType:kSoupIndexTypeString
+                                                    columnName:kAccountHCPIdField]
                              ];
 
     self.whereClause = [NSString stringWithFormat:@"OwnerId = '%@'", [self.class currentUserID]];
 
-    NSString *soupName = @"Accounts";
-    NSString *orderByFieldName = kAccountNameField;
+    NSString *soupName = @"GLBL_HCP_Customer";
+    NSString *orderByFieldName = kObjectNameField;
     return [self initWithObjectType:objectType objectFieldSpecs:objectFieldSpecs updateObjectFieldSpecs:updateObjectFieldSpecs
                          indexSpecs:indexSpecs soupName:soupName orderByFieldName:orderByFieldName];
 }

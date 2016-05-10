@@ -20,7 +20,11 @@
 #import "AccountSObjectData.h"
 #import "ProductSObjectData.h"
 #import "DSOPopupController.h"
+#import "HCPPopupController.h"
+#import "ProductPopupController.h"
+#import "RequestLineTableViewCell.h"
 #import "WYPopoverController.h"
+#import "Helper.h"
 #import <SalesforceSDKCore/SFDefaultUserManagementViewController.h>
 #import <SmartStore/SFSmartStoreInspectorViewController.h>
 #import <SalesforceSDKCore/SFAuthenticationManager.h>
@@ -40,13 +44,15 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 
 // View / UI properties
 @property (nonatomic, strong) UILabel *navBarLabel;
-@property (nonatomic, strong) UIBarButtonItem *syncButton;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
 
 // Data properties
 @property (nonatomic, strong) NSMutableArray *filtereDataRows;
 @property (nonatomic, strong) FormRequestSObjectData *formRequestObject;
 @property (nonatomic, strong) FormDSOSObjectData *dsoObject;
+@property (nonatomic, strong) NSMutableArray *formLines;
+@property (nonatomic, strong) SampleRequestSObjectData *currentObject;
 
 @end
 
@@ -113,11 +119,14 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 
     // Navigation bar buttons
     self.addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add"] style:UIBarButtonItemStylePlain target:self action:@selector(addSampleRequest)];
-    self.syncButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"sync"] style:UIBarButtonItemStylePlain target:self action:@selector(syncUpDown)];
-    self.navigationItem.rightBarButtonItems = @[ self.syncButton, self.addButton ];
+    self.saveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"save"] style:UIBarButtonItemStylePlain target:self action:@selector(saveSampleRequest)];
+    self.navigationItem.rightBarButtonItems = @[ self.saveButton, self.addButton ];
     for (UIBarButtonItem *bbi in self.navigationItem.rightBarButtonItems) {
         bbi.tintColor = [UIColor whiteColor];
     }
+
+    UINib *nib = [UINib nibWithNibName:@"RequestLineTableViewCell" bundle:nil];
+    [[self tableView] registerNib:nib forCellReuseIdentifier:@"SampleRequestListCellIdentifier"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -125,6 +134,7 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 
     self.formRequestObject = [[FormRequestSObjectData alloc] init];
     self.formRequestObject.formLines = [NSMutableArray array];
+    self.formLines = [NSMutableArray array];
     [self addSampleRequest];
 
     [self updateDSO];
@@ -164,27 +174,35 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 
 #pragma mark - UITableView delegate methods
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50.0f;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.formRequestObject.formLines count];
+    return [self.formLines count] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView_ cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"SampleRequestListCellIdentifier";
 
-    UITableViewCell *cell = [tableView_ dequeueReusableCellWithIdentifier:CellIdentifier];
+    RequestLineTableViewCell *cell = [tableView_ dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[RequestLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
 
-    SampleRequestSObjectData *obj = [self.formRequestObject.formLines objectAtIndex:indexPath.row];
-    cell.textLabel.text = @"Form line";
-    cell.textLabel.font = [UIFont systemFontOfSize:kProductTitleFontSize];
-    cell.detailTextLabel.text = @"Form line";
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:kProductDetailFontSize];
-    cell.detailTextLabel.textColor = [[self class] colorFromRgbHexValue:kProductTitleTextColor];
-    cell.imageView.image = nil;
+    if (indexPath.row > 0) {
+        SampleRequestSObjectData *obj = [self.formLines objectAtIndex:indexPath.row - 1];
+        cell.hcpObjects = self.accountDataMgr.dataRows;
+        cell.productObjects = self.productDataMgr.dataRows;
+        cell.object = obj;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.hcpName.tag = indexPath.row - 1;
+        [cell.hcpName addTarget:self action:@selector(hcpSelect:) forControlEvents:UIControlEventTouchUpInside];
+
+        cell.productName.tag = indexPath.row - 1;
+        [cell.productName addTarget:self action:@selector(productSelect:) forControlEvents:UIControlEventTouchUpInside];
+    }
 
     // cell.accessoryView = [self accessoryViewForObject:obj];
 
@@ -196,13 +214,13 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 // for some items. By default, all items are editable.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return YES if you want the specified item to be editable.
-    return self.formRequestObject.formLines.count > 1;
+    return self.formLines.count > 1 && indexPath.row > 0;
 }
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.formRequestObject.formLines removeObjectAtIndex:indexPath.row];
+        [self.formLines removeObjectAtIndex:indexPath.row - 1];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
@@ -226,14 +244,14 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 #pragma mark - Popover delegate
 
 - (void)showOtherActions:(UIButton *)sender {
-    if([self.popOverController isPopoverVisible]){
+    if ([self.popOverController isPopoverVisible]){
         [self.popOverController dismissPopoverAnimated:YES];
         return;
     }
 
     DSOPopupController *popoverContent = [[DSOPopupController alloc] initWithAppViewController:self
-                                                                                              dsos:self.formDSODataMgr.dataRows];
-    popoverContent.preferredContentSize = CGSizeMake(200,500);
+                                                                                          data:self.formDSODataMgr.dataRows];
+    popoverContent.preferredContentSize = CGSizeMake(400, 500);
     self.popOverController = [[WYPopoverController alloc] initWithContentViewController:popoverContent];
 
     [self.popOverController presentPopoverFromRect:sender.frame
@@ -244,15 +262,27 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 }
 
 - (void)popoverOptionObjectSelected:(SObjectData *)object {
-    self.dsoObject = (FormDSOSObjectData *) object;
+    if ([object isKindOfClass:[FormDSOSObjectData class]]) {
+        self.dsoObject = (FormDSOSObjectData *) object;
+        [self updateDSO];
+    } else if ([object isKindOfClass:[AccountSObjectData class]]) {
+        self.currentObject.accountId = object.objectId;
+    } else if ([object isKindOfClass:[ProductSObjectData class]]) {
+        self.currentObject.productId = object.objectId;
+    }
+
+    [self.tableView reloadData];
+
     [self.popOverController dismissPopoverAnimated:YES];
-    [self updateDSO];
 }
 
 #pragma mark - Private methods
 
 - (void)addSampleRequest {
-    [self.formRequestObject.formLines addObject:[[SampleRequestSObjectData alloc] init]];
+    SampleRequestSObjectData *obj = [[SampleRequestSObjectData alloc] init];
+    obj.quantity = [NSNumber numberWithInt:0];
+    obj.status = @"Draft";
+    [self.formLines addObject:obj];
     [self.tableView reloadData];
     /*self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kNavBarTitleText style:UIBarButtonItemStylePlain target:nil action:nil];
     SampleRequestDetailViewController *detailVc = [[SampleRequestDetailViewController alloc] initForNewSampleRequestWithDataManager:self.dataMgr saveBlock:^{
@@ -264,12 +294,37 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
     [self.navigationController pushViewController:detailVc animated:YES];*/
 }
 
+- (void)saveSampleRequest {
+    self.formRequestObject.dsoId = self.dsoObject.objectId;
+    self.formRequestObject.status = @"Draft";
+    self.formRequestObject.requestDate = @"2016-05-09";
+
+    for (SObjectData *data in self.formLines) {
+        [self.formRequestObject.formLines addObject:data.soupDict];
+    }
+
+    [self.formRequestDataMgr createLocalData:self.formRequestObject];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateRecord object:nil];
+
+    self.formRequestObject = [[FormRequestSObjectData alloc] init];
+    self.formRequestObject.formLines = [NSMutableArray array];
+    self.formLines = [NSMutableArray array];
+    [self addSampleRequest];
+    
+    [self updateDSO];
+}
+
 - (void)updateDSO {
     for (UIView *view in self.formHeader.subviews) {
         [view removeFromSuperview];
     }
 
-    FormDSOSObjectData *dsoObject = self.dsoObject ? self.dsoObject : [self.formDSODataMgr.dataRows firstObject];
+    if (!self.dsoObject) {
+        self.dsoObject = [self.formDSODataMgr.dataRows firstObject];
+    }
+
+    FormDSOSObjectData *dsoObject = self.dsoObject;
 
     UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     btn1.frame = CGRectMake(20.0, 10.0, 200.0, 30.0);
@@ -313,6 +368,46 @@ static CGFloat    const kProductDetailFontSize          = 13.0;
 - (NSString *)formatAccount:(SampleRequestSObjectData *) sampleRequest {
     AccountSObjectData *account = (AccountSObjectData *) [self.accountDataMgr findById:sampleRequest.accountId];
     return account ? account.name : (sampleRequest.accountName ? sampleRequest.accountName : @"");    
+}
+
+- (IBAction)hcpSelect:(UIButton *)sender {
+    if ([self.popOverController isPopoverVisible]){
+        [self.popOverController dismissPopoverAnimated:YES];
+        return;
+    }
+
+    self.currentObject = [self.formLines objectAtIndex:sender.tag];
+
+    HCPPopupController *popoverContent = [[HCPPopupController alloc] initWithAppViewController:self
+                                                                                          data:self.accountDataMgr.dataRows];
+    popoverContent.preferredContentSize = CGSizeMake(400, 500);
+    self.popOverController = [[WYPopoverController alloc] initWithContentViewController:popoverContent];
+
+    [self.popOverController presentPopoverFromRect:sender.frame
+                                            inView:sender.superview
+                          permittedArrowDirections:WYPopoverArrowDirectionAny
+                                          animated:YES
+                                           options:WYPopoverAnimationOptionFade];
+}
+
+- (IBAction)productSelect:(UIButton *)sender {
+    if ([self.popOverController isPopoverVisible]){
+        [self.popOverController dismissPopoverAnimated:YES];
+        return;
+    }
+
+    self.currentObject = [self.formLines objectAtIndex:sender.tag];
+
+    ProductPopupController *popoverContent = [[ProductPopupController alloc] initWithAppViewController:self
+                                                                                                  data:self.productDataMgr.dataRows];
+    popoverContent.preferredContentSize = CGSizeMake(400, 500);
+    self.popOverController = [[WYPopoverController alloc] initWithContentViewController:popoverContent];
+
+    [self.popOverController presentPopoverFromRect:sender.frame
+                                            inView:sender.superview
+                          permittedArrowDirections:WYPopoverArrowDirectionAny
+                                          animated:YES
+                                           options:WYPopoverAnimationOptionFade];
 }
 
 @end

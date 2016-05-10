@@ -89,6 +89,14 @@
     [self updateSoupForFieldName:kObjectOwnerIdField fieldValue:ownerId];
 }
 
+- (NSString *)name {
+    return [self nonNullFieldValue:kObjectNameField];
+}
+
+- (void)setName:(NSString *)name {
+    [self updateSoupForFieldName:kObjectNameField fieldValue:name];
+}
+
 // dataSpec is abstract.
 + (SObjectDataSpec *)dataSpec {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException

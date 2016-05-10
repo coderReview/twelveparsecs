@@ -47,56 +47,42 @@
 
 #pragma mark - Property getters / setters
 
-- (NSString *)name {
-    return [self nonNullFieldValue:kAccountNameField];
+- (NSString *)hcpId {
+    return [self nonNullFieldValue:kAccountHCPIdField];
 }
 
-- (void)setName:(NSString *)name {
-    [self updateSoupForFieldName:kAccountNameField fieldValue:name];
+- (void)setHcpId:(NSString *)hcpId {
+    [self updateSoupForFieldName:kAccountHCPIdField fieldValue:hcpId];
 }
 
-- (NSString *)accountNumber {
-    return [self nonNullFieldValue:kAccountAccountNumberField];
+- (NSString *)hospitalClinic {
+    return [self nonNullFieldValue:kAccountHospitalField];
 }
 
-- (void)setAccountNumber:(NSString *)accountNumber {
-    [self updateSoupForFieldName:kAccountAccountNumberField fieldValue:accountNumber];
+- (void)setHospitalClinic:(NSString *)hospitalClinic {
+    [self updateSoupForFieldName:kAccountHospitalField fieldValue:hospitalClinic];
 }
 
-- (NSString *)website {
-    return [self nonNullFieldValue:kAccountWebsiteField];
+- (NSString *)specialty {
+    return [self nonNullFieldValue:kAccountSpecialtyField];
 }
 
-- (void)setWebsite:(NSString *)website {
-    [self updateSoupForFieldName:kAccountWebsiteField fieldValue:website];
+- (void)setSpecialty:(NSString *)specialty {
+    [self updateSoupForFieldName:kAccountSpecialtyField fieldValue:specialty];
 }
 
-- (NSString *)phone {
-    return [self nonNullFieldValue:kAccountPhoneField];
+- (NSString *)accountId {
+    return [self nonNullFieldValue:kAccountSpecialtyField];
 }
 
-- (void)setPhone:(NSString *)phone {
-    [self updateSoupForFieldName:kAccountPhoneField fieldValue:phone];
+- (void)setAccountId:(NSString *)accountId {
+    [self updateSoupForFieldName:kAccountAccountField fieldValue:accountId];
 }
 
-- (NSString *)type {
-    return [self nonNullFieldValue:kAccountTypeField];
+- (NSString *)accountName {
+    return [[self nonNullFieldValue:kAccountAccountField] objectForKey:@"Name"];
 }
 
-- (void)setType:(NSString *)type {
-    [self updateSoupForFieldName:kAccountTypeField fieldValue:type];
-}
 
-- (NSString *)industry {
-    return [self nonNullFieldValue:kAccountIndustryField];
-}
-
-- (void)setIndustry:(NSString *)industry {
-    [self updateSoupForFieldName:kAccountIndustryField fieldValue:industry];
-}
-
-- (NSString*)lastModifiedDate {
-    return [self nonNullFieldValue:kLastModifiedDate];
-}
 
 @end

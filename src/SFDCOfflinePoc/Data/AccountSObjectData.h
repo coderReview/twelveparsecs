@@ -41,11 +41,10 @@
  */
 @interface AccountSObjectData : SObjectData
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *accountNumber;
-@property (nonatomic, copy) NSString *website;
-@property (nonatomic, copy) NSString *phone;
-@property (nonatomic, copy) NSString *type;
-@property (nonatomic, copy) NSString *industry;
+@property (nonatomic, copy) NSString *hcpId;
+@property (nonatomic, copy) NSString *hospitalClinic;
+@property (nonatomic, copy) NSString *specialty;
+@property (nonatomic, copy) NSString *accountId;
+@property (nonatomic, copy) NSString *accountName;
 
 @end

@@ -23,14 +23,6 @@
 
 #pragma mark - Property getters / setters
 
-- (NSString *)name {
-    return [self nonNullFieldValue:kSampleRequestNameField];
-}
-
-- (void)setName:(NSString *)name {
-    [self updateSoupForFieldName:kSampleRequestNameField fieldValue:name];
-}
-
 - (NSString *)accountId {
     return [self nonNullFieldValue:kSampleRequestAccountField];
 }
@@ -71,5 +63,12 @@
     [self updateSoupForFieldName:kSampleRequestStatusField fieldValue:status];
 }
 
+- (NSString *)formRequestId {
+    return [self nonNullFieldValue:kSampleRequestFormRequestField];
+}
+
+- (void)setFormRequestId:(NSString *)formRequestId {
+    [self updateSoupForFieldName:kSampleRequestFormRequestField fieldValue:formRequestId];
+}
 
 @end

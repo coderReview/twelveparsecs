@@ -9,7 +9,6 @@
 #import "ProductSObjectDataSpec.h"
 #import "ProductSObjectData.h"
 
-NSString * const kProductNameField          = @"Name";
 NSString * const kProductAmountField        = ADD_NAMESPACE(@"Amount__c");
 NSString * const kProductCodeField          = ADD_NAMESPACE(@"Code__c");
 NSString * const kProductVersionField       = ADD_NAMESPACE(@"Version__c");
@@ -20,23 +19,23 @@ NSString * const kProductVersionField       = ADD_NAMESPACE(@"Version__c");
     NSString *objectType = ADD_NAMESPACE(@"KSRA_Product__c");
     NSArray *objectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSObjectIdField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectOwnerIdField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kProductNameField searchable:YES],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectNameField searchable:YES],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kProductAmountField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kProductCodeField searchable:YES],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kProductVersionField searchable:YES]
                                    ];
-    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kProductNameField searchable:YES],
+    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectNameField searchable:YES],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kProductAmountField searchable:NO],
                                          [[SObjectDataFieldSpec alloc] initWithFieldName:kProductCodeField searchable:YES],
                                          [[SObjectDataFieldSpec alloc] initWithFieldName:kProductVersionField searchable:YES]
                                    ];
 
     // Any searchable fields would likely require index specs, if you're searching directly against SmartStore.
-    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kProductNameField indexType:kSoupIndexTypeString columnName:kProductNameField],
+    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kObjectNameField indexType:kSoupIndexTypeString columnName:kObjectNameField],
                              [[SFSoupIndex alloc] initWithPath:kProductCodeField indexType:kSoupIndexTypeString columnName:kProductCodeField]
                              ];
     NSString *soupName = @"Products";
-    NSString *orderByFieldName = kProductNameField;
+    NSString *orderByFieldName = kObjectNameField;
     
     
     // ktb 1.27.2016 took this out since I want to show all products.

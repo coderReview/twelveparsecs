@@ -9,7 +9,6 @@
 #import "FormRequestSObjectDataSpec.h"
 #import "FormRequestSObjectData.h"
 
-NSString * const kFormRequestNameField              = @"Name";
 NSString * const kFormRequestDSOQuery               = ADD_NAMESPACE(@"DSO__r.Name");
 NSString * const kFormRequestDSOQueryField          = ADD_NAMESPACE(@"DSO__r");
 NSString * const kFormRequestDSOField               = ADD_NAMESPACE(@"DSO__c");
@@ -21,6 +20,7 @@ NSString * const kFormRequestStatusField            = ADD_NAMESPACE(@"Status__c"
 NSString * const kFormRequestTotalAmountField       = ADD_NAMESPACE(@"Total_Amount__c");
 NSString * const kFormRequestApprovalField          = ADD_NAMESPACE(@"Approver__c");
 NSString * const kFormRequestReviewerField          = ADD_NAMESPACE(@"Reviewer__c");
+NSString * const kFormRequestFormLinesField         = @"kFormRequestFormLinesField";
 
 @implementation FormRequestSObjectDataSpec
 
@@ -28,7 +28,7 @@ NSString * const kFormRequestReviewerField          = ADD_NAMESPACE(@"Reviewer__
     NSString *objectType = ADD_NAMESPACE(@"KSRA_Form_Request__c");
     NSArray *objectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kSObjectIdField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectOwnerIdField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestNameField searchable:YES],
+                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kObjectNameField searchable:YES],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestDSOField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestDSOQuery searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestRejectionReasonField searchable:NO],
@@ -40,21 +40,25 @@ NSString * const kFormRequestReviewerField          = ADD_NAMESPACE(@"Reviewer__
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestApprovalField searchable:NO],
                                    [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestReviewerField searchable:NO]
                                    ];
-    NSArray *updateObjectFieldSpecs = @[ [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestNameField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestStatusField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestApprovalField searchable:NO],
-                                   [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestReviewerField searchable:NO]
-                                   ];
+    NSArray *updateObjectFieldSpecs = @[
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestDSOField searchable:NO],
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestStatusField searchable:NO],
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestRequestDateField searchable:NO],
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestReviewerTimeField searchable:NO],
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestApprovalTimeField searchable:NO],
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestApprovalField searchable:NO],
+                                        [[SObjectDataFieldSpec alloc] initWithFieldName:kFormRequestReviewerField searchable:NO]
+                                        ];
 
     // Any searchable fields would likely require index specs, if you're searching directly against SmartStore.
-    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kFormRequestNameField indexType:kSoupIndexTypeString
-                                                    columnName:kFormRequestNameField]
+    NSArray *indexSpecs = @[ [[SFSoupIndex alloc] initWithPath:kObjectNameField indexType:kSoupIndexTypeString
+                                                    columnName:kObjectNameField]
                              ];
 
     self.whereClause = nil;
 
     NSString *soupName = @"FormRequests";
-    NSString *orderByFieldName = kFormRequestNameField;
+    NSString *orderByFieldName = kObjectNameField;
     return [self initWithObjectType:objectType objectFieldSpecs:objectFieldSpecs updateObjectFieldSpecs:updateObjectFieldSpecs
                          indexSpecs:indexSpecs soupName:soupName orderByFieldName:orderByFieldName];
 }

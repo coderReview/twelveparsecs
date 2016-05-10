@@ -150,7 +150,8 @@ static NSString * const OAuthRedirectURI        = @"testsfdc:///mobilesdk/detect
 
     TabBarViewController *tabVC = [[TabBarViewController alloc] init];
     tabVC.viewControllers = [NSArray arrayWithObjects:cnavVC, pnavVC, snavVC, nil];
-    tabVC.mgrArray = [NSArray arrayWithObjects:accountVC.dataMgr, productVC.dataMgr, sampleVC.dataMgr, nil];
+    tabVC.mgrArray = [NSArray arrayWithObjects:accountVC.dataMgr, productVC.dataMgr, sampleVC.dataMgr,
+                      sampleVC.formDSODataMgr, sampleVC.formRequestDataMgr, nil];
 
     // set managers
     accountVC.accountDataMgr = accountVC.dataMgr;

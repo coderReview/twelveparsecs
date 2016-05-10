@@ -166,7 +166,7 @@
 
 - (NSArray *)dataRowsFromProduct {
     self.productDataRows = @[ @[ @"Name",
-                                 kProductNameField,
+                                 kObjectNameField,
                                  [[self class] emptyStringForNullValue:self.product.name],
                                  [self productTextField:self.product.name] ],
                               @[ @"Amount",
@@ -223,7 +223,7 @@
         NSString *newFieldData = ((UITextField *)fieldArray[3]).text;
         if (self.isNewProduct || ![newFieldData isEqualToString:origFieldData]) {
             BOOL empty = !newFieldData || newFieldData.length == 0;
-            if (empty && [fieldName isEqualToString:kProductNameField]) {
+            if (empty && [fieldName isEqualToString:kObjectNameField]) {
                 [Helper showToast:self.toastView message:@"Please enter a name" label:self.toastViewMessageLabel];
                 return;
             } else if (empty && [fieldName isEqualToString:kProductCodeField]) {

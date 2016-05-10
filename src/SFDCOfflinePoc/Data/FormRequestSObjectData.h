@@ -16,7 +16,6 @@
  */
 @interface FormRequestSObjectData : SObjectData
 
-@property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *dsoId;
 @property (nonatomic, copy) NSString *rejectionReason;
 @property (nonatomic, copy) NSString *requestDate;

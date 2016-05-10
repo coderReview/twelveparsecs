@@ -22,12 +22,40 @@
  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "DSOPopupController.h"
-#import "FormDSOSObjectData.h"
+#import "BasePopupController.h"
+#import "SampleRequestListViewController.h"
+#import "SObjectData.h"
 
-@implementation DSOPopupController
+@implementation BasePopupController
+
+- (id)initWithAppViewController:(SampleRequestListViewController *)appViewController data:(NSArray *) data {
+    self = [super init];
+    if (self) {
+        self.appViewController = appViewController;
+        self.data = data;
+    }
+    return self;
+}
+
+#pragma mark - View lifecycle
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+	return YES;
+}
 
 #pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.data.count;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -38,11 +66,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
 
-    FormDSOSObjectData *object = self.data[indexPath.row];
+    SObjectData *object = self.data[indexPath.row];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"name: %@", object.name];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Code: %@", object.code];
+    cell.textLabel.text = [NSString stringWithFormat:@"ID: %@", object.objectId];
+
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.appViewController popoverOptionObjectSelected:self.data[indexPath.row]];
 }
 
 @end

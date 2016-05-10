@@ -14,6 +14,11 @@
 		4B2E30801CDBC4C000C4D4D5 /* FormDSOSObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E307D1CDBC4C000C4D4D5 /* FormDSOSObjectData.m */; };
 		4B2E30811CDBC4C000C4D4D5 /* FormDSOSObjectDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E307F1CDBC4C000C4D4D5 /* FormDSOSObjectDataSpec.m */; };
 		4B2E30841CDBC9B500C4D4D5 /* DSOPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E30831CDBC9B500C4D4D5 /* DSOPopupController.m */; };
+		4B2E30891CDCEFE200C4D4D5 /* RequestLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E30871CDCEFE200C4D4D5 /* RequestLineTableViewCell.m */; };
+		4B2E308A1CDCEFE200C4D4D5 /* RequestLineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B2E30881CDCEFE200C4D4D5 /* RequestLineTableViewCell.xib */; };
+		4B2E308D1CE0179E00C4D4D5 /* BasePopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E308C1CE0179E00C4D4D5 /* BasePopupController.m */; };
+		4B2E30921CE01C8200C4D4D5 /* HCPPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E308F1CE01C8200C4D4D5 /* HCPPopupController.m */; };
+		4B2E30931CE01C8200C4D4D5 /* ProductPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2E30911CE01C8200C4D4D5 /* ProductPopupController.m */; };
 		4B365D251C564174005EBCAD /* ActionsPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B365CF71C564174005EBCAD /* ActionsPopupController.m */; };
 		4B365D261C564174005EBCAD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B365CF91C564174005EBCAD /* AppDelegate.m */; };
 		4B365D271C564174005EBCAD /* BaseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B365CFB1C564174005EBCAD /* BaseListViewController.m */; };
@@ -57,6 +62,15 @@
 		4B2E307F1CDBC4C000C4D4D5 /* FormDSOSObjectDataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormDSOSObjectDataSpec.m; sourceTree = "<group>"; };
 		4B2E30821CDBC9B500C4D4D5 /* DSOPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSOPopupController.h; sourceTree = "<group>"; };
 		4B2E30831CDBC9B500C4D4D5 /* DSOPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSOPopupController.m; sourceTree = "<group>"; };
+		4B2E30861CDCEFE200C4D4D5 /* RequestLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RequestLineTableViewCell.h; path = SFDCOfflinePoc/Classes/RequestLineTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		4B2E30871CDCEFE200C4D4D5 /* RequestLineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequestLineTableViewCell.m; path = SFDCOfflinePoc/Classes/RequestLineTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		4B2E30881CDCEFE200C4D4D5 /* RequestLineTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RequestLineTableViewCell.xib; path = SFDCOfflinePoc/Resources/RequestLineTableViewCell.xib; sourceTree = SOURCE_ROOT; };
+		4B2E308B1CE0179E00C4D4D5 /* BasePopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePopupController.h; sourceTree = "<group>"; };
+		4B2E308C1CE0179E00C4D4D5 /* BasePopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePopupController.m; sourceTree = "<group>"; };
+		4B2E308E1CE01C8200C4D4D5 /* HCPPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPPopupController.h; sourceTree = "<group>"; };
+		4B2E308F1CE01C8200C4D4D5 /* HCPPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPPopupController.m; sourceTree = "<group>"; };
+		4B2E30901CE01C8200C4D4D5 /* ProductPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductPopupController.h; sourceTree = "<group>"; };
+		4B2E30911CE01C8200C4D4D5 /* ProductPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductPopupController.m; sourceTree = "<group>"; };
 		4B365CF61C564174005EBCAD /* ActionsPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionsPopupController.h; sourceTree = "<group>"; };
 		4B365CF71C564174005EBCAD /* ActionsPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionsPopupController.m; sourceTree = "<group>"; };
 		4B365CF81C564174005EBCAD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -132,9 +146,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B2E30851CDCEFAA00C4D4D5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4B2E30881CDCEFE200C4D4D5 /* RequestLineTableViewCell.xib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		4B365CF51C564174005EBCAD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4B2E308E1CE01C8200C4D4D5 /* HCPPopupController.h */,
+				4B2E308F1CE01C8200C4D4D5 /* HCPPopupController.m */,
+				4B2E30901CE01C8200C4D4D5 /* ProductPopupController.h */,
+				4B2E30911CE01C8200C4D4D5 /* ProductPopupController.m */,
+				4B2E308B1CE0179E00C4D4D5 /* BasePopupController.h */,
+				4B2E308C1CE0179E00C4D4D5 /* BasePopupController.m */,
+				4B2E30861CDCEFE200C4D4D5 /* RequestLineTableViewCell.h */,
+				4B2E30871CDCEFE200C4D4D5 /* RequestLineTableViewCell.m */,
 				4B2E30821CDBC9B500C4D4D5 /* DSOPopupController.h */,
 				4B2E30831CDBC9B500C4D4D5 /* DSOPopupController.m */,
 				4B365CF61C564174005EBCAD /* ActionsPopupController.h */,
@@ -233,6 +263,7 @@
 		4F8D5E9F1B6C0568005E64D4 /* SFDCOfflinePoc */ = {
 			isa = PBXGroup;
 			children = (
+				4B2E30851CDCEFAA00C4D4D5 /* Resources */,
 				4B5C1E1A1C5B24F2000A135E /* Helper */,
 				4B365CF51C564174005EBCAD /* Classes */,
 				4B365D0C1C564174005EBCAD /* Data */,
@@ -323,6 +354,7 @@
 			files = (
 				4BD3DE2C1C5AFAFE00B6FB2E /* Settings.bundle in Resources */,
 				4F8D5EAE1B6C0568005E64D4 /* Images.xcassets in Resources */,
+				4B2E308A1CDCEFE200C4D4D5 /* RequestLineTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,7 +416,9 @@
 				4B2E30751CD772C200C4D4D5 /* FormRequestSObjectData.m in Sources */,
 				4B365D311C564174005EBCAD /* ContactSObjectDataSpec.m in Sources */,
 				4B365D251C564174005EBCAD /* ActionsPopupController.m in Sources */,
+				4B2E308D1CE0179E00C4D4D5 /* BasePopupController.m in Sources */,
 				4B365D291C564174005EBCAD /* AccountListViewController.m in Sources */,
+				4B2E30921CE01C8200C4D4D5 /* HCPPopupController.m in Sources */,
 				4BDBFEE31C56C78000F1535A /* InitialViewController.m in Sources */,
 				4B2E30801CDBC4C000C4D4D5 /* FormDSOSObjectData.m in Sources */,
 				4B2E30701CD6367900C4D4D5 /* AccountSObjectDataSpec.m in Sources */,
@@ -393,6 +427,7 @@
 				4B365D351C564174005EBCAD /* SampleRequestSObjectDataSpec.m in Sources */,
 				4B365D341C564174005EBCAD /* SampleRequestSObjectData.m in Sources */,
 				4B2E306F1CD6367900C4D4D5 /* AccountSObjectData.m in Sources */,
+				4B2E30891CDCEFE200C4D4D5 /* RequestLineTableViewCell.m in Sources */,
 				4B365D361C564174005EBCAD /* SObjectData.m in Sources */,
 				4B365D371C564174005EBCAD /* SObjectDataFieldSpec.m in Sources */,
 				4B2E30811CDBC4C000C4D4D5 /* FormDSOSObjectDataSpec.m in Sources */,
@@ -408,6 +443,7 @@
 				4B5C1E1D1C5B2581000A135E /* Helper.m in Sources */,
 				4B365D261C564174005EBCAD /* AppDelegate.m in Sources */,
 				4B365D2D1C564174005EBCAD /* SampleRequestDetailViewController.m in Sources */,
+				4B2E30931CE01C8200C4D4D5 /* ProductPopupController.m in Sources */,
 				4B365D381C564174005EBCAD /* SObjectDataManager.m in Sources */,
 				4B365D281C564174005EBCAD /* AccountDetailViewController.m in Sources */,
 				4B2E30761CD772C200C4D4D5 /* FormRequestSObjectDataSpec.m in Sources */,

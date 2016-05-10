@@ -8,7 +8,6 @@
 
 #import "SObjectDataSpec.h"
 
-extern NSString * const kProductNameField;
 extern NSString * const kProductAmountField;
 extern NSString * const kProductCodeField;
 extern NSString * const kProductVersionField;

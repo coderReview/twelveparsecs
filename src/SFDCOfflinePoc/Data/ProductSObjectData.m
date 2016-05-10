@@ -23,14 +23,6 @@
 
 #pragma mark - Property getters / setters
 
-- (NSString *)name {
-    return [self nonNullFieldValue:kProductNameField];
-}
-
-- (void)setName:(NSString *)name {
-    [self updateSoupForFieldName:kProductNameField fieldValue:name];
-}
-
 - (NSNumber *)amount {
     return [self nonNullFieldValue:kProductAmountField];
 }
